@@ -1,4 +1,4 @@
-package com.gerger.hikyaku.api;
+package com.gerkovger.hikyaku.api;
 
 public enum MsgType {
 
@@ -11,7 +11,7 @@ public enum MsgType {
     PING(6),
     PONG(7);
 
-    final byte code;
+    public final byte code;
     MsgType(int code) {
         this.code = (byte) code;
     }

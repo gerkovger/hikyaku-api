@@ -1,38 +1,39 @@
-package com.gerger.hikyaku.api;
+package com.gerkovger.hikyaku.api.channel;
+
+import com.gerkovger.hikyaku.api.HikMessage;
+import lombok.Getter;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.UUID;
 
-import static com.gerger.hikyaku.api.Constants.*;
+import static com.gerkovger.hikyaku.api.Constants.*;
 
 public class HikConnection {
 
-    public static HikConnection createConnection(String ip, int port) {
-        return new HikConnection(ip, port);
-    }
+    private final String connectionId = UUID.randomUUID().toString();
 
     private final String ip;
-
     private final int port;
 
-    private Socket clientSocket;
-
+    @Getter
     private DataOutputStream out;
-    private BufferedReader in;
+    @Getter
+    private DataInputStream in;
 
 
-    private HikConnection(String ip, int port) {
-        this.ip = ip;
-        this.port = port;
+    HikConnection(Address address) {
+        this.ip = address.ip();
+        this.port = address.port();
     }
 
-    public void connect() throws IOException {
-        clientSocket = new Socket(ip, port);
+    void connect() throws IOException {
+        Socket clientSocket = new Socket(ip, port);
         out = new DataOutputStream(clientSocket.getOutputStream());
-        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        in = new DataInputStream(clientSocket.getInputStream());
     }
 
-    public void sendMessage(HikMessage message) throws IOException {
+    void sendMessage(HikMessage message) throws IOException {
         short headerLen = 20;
         int frameLen = headerLen + message.getPayload().length;
         short flags = 0;
@@ -47,5 +48,7 @@ public class HikConnection {
         out.write(message.getPayload());
         out.flush();
     }
+
+    public record Address(String ip, int port) {}
 
 }

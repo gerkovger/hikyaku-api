@@ -1,3 +1,5 @@
+Message format
+
 | Field          | Offset (bytes) | Size (bytes) | Type            | Description                                  |
 |----------------|----------------|--------------|-----------------|----------------------------------------------|
 | magic          | 0              | 2            | uint16          | Protocol magic (`0x4252` = "BR")             |

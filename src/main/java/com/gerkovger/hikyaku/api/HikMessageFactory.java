@@ -4,7 +4,7 @@ import java.io.*;
 
 import static com.gerkovger.hikyaku.api.Constants.*;
 import static com.gerkovger.hikyaku.api.Constants.MAGIC;
-import static com.gerkovger.hikyaku.api.Constants.MIN_HEADER_LEN;
+import static com.gerkovger.hikyaku.api.Constants.HEADER_LEN;
 
 public class HikMessageFactory {
 
@@ -21,14 +21,14 @@ public class HikMessageFactory {
         long correlationId = in.readLong();
 
         // Validate
-        if (headerLen < MIN_HEADER_LEN) throw new IOException("Invalid headerLen: " + headerLen);
+        if (headerLen < HEADER_LEN) throw new IOException("Invalid headerLen: " + headerLen);
         if (frameLen < headerLen) throw new IOException("Invalid frameLen: " + frameLen);
         if (frameLen > MAX_FRAME_LEN) throw new IOException("Frame too large: " + frameLen);
 
         int payloadLen = frameLen - headerLen;
 
         // If you ever extend the header beyond 20, skip extra header bytes:
-        int extraHeader = headerLen - MIN_HEADER_LEN;
+        int extraHeader = headerLen - HEADER_LEN;
         if (extraHeader > 0) {
             in.skipNBytes(extraHeader);
         }
@@ -56,7 +56,7 @@ public class HikMessageFactory {
             int frameLen = in.readInt();
             long correlationId = in.readLong();
 
-            if (headerLen < MIN_HEADER_LEN) {
+            if (headerLen < HEADER_LEN) {
                 throw new IllegalArgumentException("Invalid headerLen: " + headerLen);
             }
             if (frameLen < headerLen || frameLen > rawMessage.length) {

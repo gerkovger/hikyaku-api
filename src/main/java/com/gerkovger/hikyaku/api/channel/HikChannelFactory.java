@@ -1,5 +1,7 @@
 package com.gerkovger.hikyaku.api.channel;
 
+import com.gerkovger.hikyaku.api.exception.ConnectionFailedException;
+
 import java.io.IOException;
 
 public class HikChannelFactory {
@@ -10,7 +12,7 @@ public class HikChannelFactory {
         this.address = address;
     }
 
-    public HikTopic getTopic(String name) throws IOException {
+    public HikTopic getTopic(String name) throws IOException, ConnectionFailedException {
         var t = new HikTopic(name, address);
         t.connect();
         return t;

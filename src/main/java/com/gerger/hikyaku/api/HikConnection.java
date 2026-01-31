@@ -3,10 +3,9 @@ package com.gerger.hikyaku.api;
 import java.io.*;
 import java.net.Socket;
 
-public class HikConnection {
+import static com.gerger.hikyaku.api.Constants.*;
 
-    private static final short MAGIC = 0x4252;
-    private static final byte VERSION = 1;
+public class HikConnection {
 
     public static HikConnection createConnection(String ip, int port) {
         return new HikConnection(ip, port);
